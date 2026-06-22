@@ -340,14 +340,14 @@
       });
 
       // Profile Picture Hover Effect باستخدام القالب المخفي
-      const profilePic = document.getElementById("profile");
-      const profileTemplate =
+      //const profilePic = document.getElementById("profile");
+      //const profileTemplate =
         document.getElementById("profile-template").innerHTML;
-      if (profilePic) {
+      //if (profilePic) {
         profilePic.addEventListener("mouseenter", function () {
           this.innerHTML = '<i class="fas fa-smile"></i>';
         });
-        profilePic.addEventListener("mouseleave", function () {
+        //profilePic.addEventListener("mouseleave", function () {
           this.innerHTML = profileTemplate;
         });
       }
