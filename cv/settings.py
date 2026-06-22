@@ -119,7 +119,7 @@ import os
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'cv1', 'cv1/static'),
+    os.path.join(BASE_DIR, 'cv1', 'static'),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
