@@ -78,8 +78,7 @@ class Interest(models.Model):
 
 class PersonalInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    full_name = models.CharField(max_name=100, null=True, blank=True)
-
+    full_name = models.CharField(max_length=100, null=True, blank=True)
     job_title = models.CharField(max_length=200)
     location = models.CharField(max_length=200)
     email = models.EmailField()
