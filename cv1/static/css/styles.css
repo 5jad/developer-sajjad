@@ -217,7 +217,7 @@ h1::before, h1::after {
   content: attr(data-text);
   position: absolute; left: 0; top: 0;
   width: 100%;
-  clip: rect(0, 900px, 0, 0);
+  opacity: 0;
 }
 h1::before {
   animation: glitchTop 3s infinite linear alternate-reverse;
