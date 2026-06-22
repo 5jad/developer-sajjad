@@ -833,3 +833,10 @@ footer::before {
   .interest-grid { grid-template-columns: repeat(2, 1fr); }
   .content-section { padding: 16px 12px; }
 }
+
+/* إلغاء التنسيق التلقائي لأرقام الهواتف في المتصفحات */
+a[href^="tel"], 
+.personal-info li {
+  color: var(--text-light) !important;
+  text-decoration: none !important;
+}
