@@ -57,6 +57,12 @@ body {
 /* =============================================
    CUSTOM CURSOR
    ============================================= */
+
+@media (max-width: 900px) {
+  h1::before, h1::after { display: none; }
+}
+
+
 @media (pointer: fine) {
   .cursor {
     position: fixed;
