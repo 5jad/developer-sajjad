@@ -10,21 +10,52 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <style>
+      /* إضافات CSS لضمان التجاوب الكامل مع الهاتف */
+      @media (max-width: 768px) {
+        /* إخفاء مؤشر الماوس المخصص على الهواتف لعدم الحاجة له وتجنب المشاكل */
+        .cursor, .cursor-follower {
+          display: none !important;
+        }
+        body {
+          cursor: default !important;
+        }
+        
+        /* تحويل الهيكلية الأساسية إلى عمود واحد */
+        .main-content {
+          flex-direction: column !important;
+        }
+        
+        .sidebar, .content {
+          width: 100% !important;
+        }
+
+        /* تحسين شبكة المهارات والمشاريع على الشاشات الصغيرة */
+        .skills-grid {
+          grid-template-columns: repeat(auto-fill, minmax(80px, 1max)) !important;
+          gap: 15px !important;
+        }
+
+        .project-grid {
+          grid-template-columns: 1fr !important;
+        }
+
+        header h1 {
+          font-size: 1.8rem !important;
+        }
+      }
+    </style>
   </head>
   <body>
-    <!-- Custom Cursor -->
     <div class="cursor"></div>
     <div class="cursor-follower"></div>
 
-    <!-- Particles Effect -->
     <div id="particles" class="particles"></div>
 
-    <!-- Theme Toggle Button -->
     <button id="themeToggle" class="theme-toggle">
       <i class="fas fa-moon"></i>
     </button>
 
-    <!-- عنصر مخفي لتخزين قالب عرض الملف الشخصي -->
     <div id="profile-template" style="display: none">
       {% if personal_info.profile_picture %}
       <img
@@ -36,11 +67,9 @@
       {% endif %}
     </div>
 
-    <!-- ====== Header Section ====== -->
     <header>
       <div class="header-bg"></div>
       <div class="header-content">
-        <!-- حاوية الملف الشخصي -->
         <div id="profile">
           {% if personal_info.profile_picture %}
           <img
@@ -54,41 +83,31 @@
         <h1>{{ personal_info.user.get_full_name }}</h1>
         <div class="job-title">{{ personal_info.job_title }}</div>
         <div class="social-icons">
-
-    {% if personal_info.instagram_url %}
-        <a href="{{ personal_info.instagram_url }}" target="_blank"><i class="fab fa-instagram"></i></a>
-    {% endif %}
-    {% if personal_info.twitter_url %}
-        <a href="{{ personal_info.twitter_url }}" target="_blank"><i class="fab fa-twitter"></i></a>
-    {% endif %}
-
-    {% if personal_info.linkedin_url %}
-        <a href="{{ personal_info.linkedin_url }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-    {% endif %}
-
-    {% if personal_info.github_url %}
-        <a href="{{ personal_info.github_url }}" target="_blank"><i class="fab fa-github"></i></a>
-    {% endif %}
-
-
-</div>
-
-
+          {% if personal_info.instagram_url %}
+              <a href="{{ personal_info.instagram_url }}" target="_blank"><i class="fab fa-instagram"></i></a>
+          {% endif %}
+          {% if personal_info.twitter_url %}
+              <a href="{{ personal_info.twitter_url }}" target="_blank"><i class="fab fa-twitter"></i></a>
+          {% endif %}
+          {% if personal_info.linkedin_url %}
+              <a href="{{ personal_info.linkedin_url }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+          {% endif %}
+          {% if personal_info.github_url %}
+              <a href="{{ personal_info.github_url }}" target="_blank"><i class="fab fa-github"></i></a>
+          {% endif %}
         </div>
       </div>
     </header>
 
-    <!-- ====== Container ====== -->
     <div class="container">
       <div class="main-content">
-        <!-- ====== Sidebar ====== -->
         <div class="sidebar">
           <div class="info-section">
             <h3><i class="fas fa-user"></i> Personal Info</h3>
             <ul class="personal-info">
               <li>
                 <span class="info-label">Location:</span>
-                {{personal_info.location }}
+                {{ personal_info.location }}
               </li>
               <li>
                 <span class="info-label">Email:</span> {{ personal_info.email }}
@@ -133,7 +152,6 @@
           </div>
         </div>
 
-        <!-- ====== Content Section ====== -->
         <div class="content">
           <div class="content-section">
             <h2 class="section-title">About Me</h2>
@@ -144,8 +162,7 @@
             <ul>
               {% for cert in certifications %}
               <li>
-                <strong>{{ cert.name }}</strong> - {{ cert.issuer }} ({{
-                cert.date_obtained|date:"Y" }})
+                <strong>{{ cert.name }}</strong> - {{ cert.issuer }} ({{ cert.date_obtained|date:"Y" }})
               </li>
               {% endfor %}
             </ul>
@@ -156,13 +173,9 @@
               {% for experience in experiences %}
               <div class="timeline-item">
                 <div class="timeline-header">
-                  <span class="timeline-title"
-                    >{{ experience.title }} @ {{ experience.company }}</span
-                  >
+                  <span class="timeline-title">{{ experience.title }} @ {{ experience.company }}</span>
                   <span class="timeline-period">
-                    {{ experience.start_date|date:"Y" }} - {% if
-                    experience.is_current %} Present {{
-                    experience.end_date|date:"Y" }}
+                    {{ experience.start_date|date:"Y" }} - {% if experience.is_current %} Present {% else %} {{ experience.end_date|date:"Y" }} {% endif %}
                   </span>
                 </div>
                 <div class="timeline-subtitle">Key Responsibilities</div>
@@ -185,13 +198,8 @@
               {% for edu in education %}
               <div class="timeline-item">
                 <div class="timeline-header">
-                  <span class="timeline-title"
-                    >{{ edu.degree }} - {{ edu.institution }}</span
-                  >
-                  <span class="timeline-period"
-                    >{{ edu.start_date|date:"Y" }} - {{ edu.end_date|date:"Y"
-                    }}</span
-                  >
+                  <span class="timeline-title">{{ edu.degree }} - {{ edu.institution }}</span>
+                  <span class="timeline-period">{{ edu.start_date|date:"Y" }} - {{ edu.end_date|date:"Y" }}</span>
                 </div>
                 <div class="timeline-subtitle">Details</div>
                 <p>{{ edu.description }}</p>
@@ -235,53 +243,73 @@
       </div>
     </div>
 
-    <!-- ====== Footer Section ====== -->
     <footer>
       <div class="footer-content">
         <p class="footer-quote">"Your motivational quote goes here"</p>
-        <a href="mailto:{{ personal_info.email }}" class="contact-btn"
-          >Contact Me</a
-        >
+        <a href="mailto:{{ personal_info.email }}" class="contact-btn">Contact Me</a>
       </div>
     </footer>
 
-    <!-- ====== JavaScript ====== -->
     <script>
-      // Custom Cursor Effect
-      document.addEventListener("mousemove", function (e) {
-        const cursor = document.querySelector(".cursor");
-        const follower = document.querySelector(".cursor-follower");
-        cursor.style.left = e.clientX + "px";
-        cursor.style.top = e.clientY + "px";
-        setTimeout(() => {
-          follower.style.left = e.clientX + "px";
-          follower.style.top = e.clientY + "px";
-        }, 100);
-      });
+      // تشغيل كود حركة الماوس فقط لو كان الجهاز حاسبة (وليس شاشة لمس)
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-      // Interactive Elements Cursor Effect
-      const interactiveElements = document.querySelectorAll(
-        "a, .skill-item, .project-card, .interest-item, .theme-toggle"
-      );
-      interactiveElements.forEach((element) => {
-        element.addEventListener("mouseenter", function () {
+      if (!isMobile) {
+        // Custom Cursor Effect
+        document.addEventListener("mousemove", function (e) {
           const cursor = document.querySelector(".cursor");
           const follower = document.querySelector(".cursor-follower");
-          cursor.style.transform = "translate(-50%, -50%) scale(2.5)";
-          follower.style.transform = "translate(-50%, -50%) scale(0.5)";
+          if(cursor && follower) {
+            cursor.style.left = e.clientX + "px";
+            cursor.style.top = e.clientY + "px";
+            setTimeout(() => {
+              follower.style.left = e.clientX + "px";
+              follower.style.top = e.clientY + "px";
+            }, 100);
+          }
         });
-        element.addEventListener("mouseleave", function () {
-          const cursor = document.querySelector(".cursor");
-          const follower = document.querySelector(".cursor-follower");
-          cursor.style.transform = "translate(-50%, -50%) scale(1)";
-          follower.style.transform = "translate(-50%, -50%) scale(1)";
-        });
-      });
 
-      // Particle Effect
+        // Interactive Elements Cursor Effect
+        const interactiveElements = document.querySelectorAll(
+          "a, .skill-item, .project-card, .interest-item, .theme-toggle"
+        );
+        interactiveElements.forEach((element) => {
+          element.addEventListener("mouseenter", function () {
+            const cursor = document.querySelector(".cursor");
+            const follower = document.querySelector(".cursor-follower");
+            if(cursor && follower) {
+              cursor.style.transform = "translate(-50%, -50%) scale(2.5)";
+              follower.style.transform = "translate(-50%, -50%) scale(0.5)";
+            }
+          });
+          element.addEventListener("mouseleave", function () {
+            const cursor = document.querySelector(".cursor");
+            const follower = document.querySelector(".cursor-follower");
+            if(cursor && follower) {
+              cursor.style.transform = "translate(-50%, -50%) scale(1)";
+              follower.style.transform = "translate(-50%, -50%) scale(1)";
+            }
+          });
+        });
+
+        // تأثير الـ Hover على صورة البروفايل (يعمل على الحاسبة فقط لتجنب تعليق اللمس بالموبايل)
+        const profilePic = document.getElementById("profile");
+        const profileTemplate = document.getElementById("profile-template").innerHTML;
+        if (profilePic) {
+          profilePic.addEventListener("mouseenter", function () {
+            this.innerHTML = '<i class="fas fa-smile"></i>';
+          });
+          profilePic.addEventListener("mouseleave", function () {
+            this.innerHTML = profileTemplate;
+          });
+        }
+      }
+
+      // Particle Effect (تقليل العدد على الهواتف للأداء)
       function createParticles() {
         const particles = document.getElementById("particles");
-        const numberOfParticles = 50;
+        if (!particles) return;
+        const numberOfParticles = isMobile ? 20 : 50; // 20 للموبايل و 50 للحاسبة
         for (let i = 0; i < numberOfParticles; i++) {
           const particle = document.createElement("div");
           particle.classList.add("particle");
@@ -311,16 +339,6 @@
         }, 100);
       }
 
-      // Theme Toggle Functionality
-
-      // Typing Effect for Code (إذا وُجد)
-      const codeContent = document.querySelector(".code-content");
-      if (codeContent) {
-        const lastCodeLine = codeContent.lastElementChild;
-        const lastCodeText = lastCodeLine.innerHTML;
-        lastCodeLine.innerHTML = `<span class="typing-effect">${lastCodeText}</span>`;
-      }
-
       // Initialize on DOMContentLoaded
       document.addEventListener("DOMContentLoaded", function () {
         createParticles();
@@ -338,19 +356,6 @@
           }
         });
       });
-
-      // Profile Picture Hover Effect باستخدام القالب المخفي
-      const profilePic = document.getElementById("profile");
-      const profileTemplate =
-        document.getElementById("profile-template").innerHTML;
-      if (profilePic) {
-        profilePic.addEventListener("mouseenter", function () {
-          this.innerHTML = '<i class="fas fa-smile"></i>';
-        });
-        profilePic.addEventListener("mouseleave", function () {
-          this.innerHTML = profileTemplate;
-        });
-      }
     </script>
   </body>
 </html>
