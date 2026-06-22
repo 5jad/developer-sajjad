@@ -244,9 +244,9 @@ h1::after {
   100% { clip: rect(0.2em, 9999px, 0.3em, 0); transform: translate(2px, -2px); }
 }
 @keyframes glitchBottom {
-  0%   { clip: rect(80px, 9999px, 90px, 0); transform: translate(-2px, 2px); }
-  50%  { clip: rect(5px, 9999px, 15px, 0);  transform: translate(2px, 0); }
-  100% { clip: rect(80px, 9999px, 90px, 0); transform: translate(-2px, 2px); }
+  0%   { clip: rect(0.2em, 9999px, 0.3em, 0); transform: translate(2px, -2px); }
+  50%  { clip: rect(1.4em, 9999px, 1.5em, 0); transform: translate(-2px, 0); }
+  100% { clip: rect(0.2em, 9999px, 0.3em, 0); transform: translate(2px, -2px); }
 }
 
 /* =============================================
