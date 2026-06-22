@@ -88,7 +88,7 @@ class PersonalInfo(models.Model):
     github_url = models.URLField(blank=True)
     linkedin_url = models.URLField(blank=True)
     twitter_url = models.URLField(blank=True)
-    website_url = models.URLField(blank=True)
+    Instagram_url = models.URLField(blank=True)
     
     def __str__(self):
         return f"Profile for {self.user.username}"
