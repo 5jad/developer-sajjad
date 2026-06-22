@@ -5,13 +5,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <meta name="theme-color" content="#060d1a" />
-    <title>Resume | Professional Developer</title>
-<link rel="stylesheet" href="{% static 'css/styles.css' %}?v=1.1" />
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.1/css/all.css" />
+    <title>{{ personal_info.full_name }} | Portfolio</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=2.0" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.1/css/all.css" />
   </head>
   <body>
 
-    <!-- Custom Cursor (hidden on touch devices via CSS) -->
+    <!-- Custom Cursor -->
     <div class="cursor"></div>
     <div class="cursor-follower"></div>
 
@@ -30,7 +30,7 @@
     <!-- ====== HEADER ====== -->
     <header>
       <div class="header-content">
-        <!-- Profile Picture -->
+
         <div id="profile">
           {% if personal_info.profile_picture %}
             <img src="{{ personal_info.profile_picture.url }}" alt="Profile Picture" />
@@ -39,13 +39,20 @@
           {% endif %}
         </div>
 
-        <h1 data-text="{{ personal_info.full_name }}">
-  {{ personal_info.full_name }}
-</h1>
-
+        <h1 data-text="{{ personal_info.full_name }}">{{ personal_info.full_name }}</h1>
         <div class="job-title">{{ personal_info.job_title }}</div>
 
         <div class="social-icons">
+          {% if personal_info.github_url %}
+            <a href="{{ personal_info.github_url }}" target="_blank" rel="noopener" aria-label="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+          {% endif %}
+          {% if personal_info.linkedin_url %}
+            <a href="{{ personal_info.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          {% endif %}
           {% if personal_info.instagram_url %}
             <a href="{{ personal_info.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">
               <i class="fab fa-instagram"></i>
@@ -56,17 +63,8 @@
               <i class="fab fa-twitter"></i>
             </a>
           {% endif %}
-          {% if personal_info.linkedin_url %}
-            <a href="{{ personal_info.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn">
-              <i class="fab fa-linkedin-in"></i>
-            </a>
-          {% endif %}
-          {% if personal_info.github_url %}
-            <a href="{{ personal_info.github_url }}" target="_blank" rel="noopener" aria-label="GitHub">
-              <i class="fab fa-github"></i>
-            </a>
-          {% endif %}
         </div>
+
       </div>
     </header>
 
@@ -83,15 +81,15 @@
             <ul class="personal-info">
               <li>
                 <span class="info-label">Location</span>
-                {{ personal_info.location }}
+                <span>{{ personal_info.location }}</span>
               </li>
               <li>
                 <span class="info-label">Email</span>
-                {{ personal_info.email }}
+                <span><a href="mailto:{{ personal_info.email }}" style="color:var(--text-light);text-decoration:none;">{{ personal_info.email }}</a></span>
               </li>
               <li>
                 <span class="info-label">Phone</span>
-                {{ personal_info.phone }}
+                <span>{{ personal_info.phone }}</span>
               </li>
             </ul>
           </div>
@@ -142,19 +140,30 @@
           </section>
 
           <!-- Certifications -->
+          {% if certifications %}
           <section class="content-section fade-in">
             <h2 class="section-title">Certifications</h2>
-            <ul>
+            <div class="cert-list">
               {% for cert in certifications %}
-              <li>
-                <strong>{{ cert.name }}</strong> — {{ cert.issuer }}
-                <span style="color:var(--gold);font-size:0.8rem;margin-left:6px;">
-                  {{ cert.date_obtained|date:"Y" }}
-                </span>
-              </li>
+              <div class="cert-item">
+                <div class="cert-icon">
+                  <i class="fas fa-certificate"></i>
+                </div>
+                <div class="cert-info">
+                  <strong>{{ cert.name }}</strong>
+                  <span class="cert-issuer">{{ cert.issuer }}</span>
+                  {% if cert.description %}
+                    <p class="cert-desc">{{ cert.description }}</p>
+                  {% endif %}
+                </div>
+                {% if cert.date_obtained %}
+                <span class="cert-year">{{ cert.date_obtained|date:"Y" }}</span>
+                {% endif %}
+              </div>
               {% endfor %}
-            </ul>
+            </div>
           </section>
+          {% endif %}
 
           <!-- Work Experience -->
           <section class="content-section fade-in">
@@ -171,12 +180,15 @@
                     {% if experience.is_current %}Present{% else %}{{ experience.end_date|date:"Y" }}{% endif %}
                   </span>
                 </div>
+                {% if experience.description %}
+                  <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:10px;">{{ experience.description }}</p>
+                {% endif %}
                 <div class="timeline-subtitle">Key Responsibilities</div>
                 <ul style="list-style:disc;padding-left:16px;font-size:0.88rem;color:var(--text-muted);">
                   {% for responsibility in experience.responsibilities.all %}
                     <li style="border:none;padding:4px 0;">{{ responsibility.description }}</li>
                   {% empty %}
-                    <li style="border:none;">No responsibilities listed</li>
+                    <li style="border:none;color:var(--text-dim);">No responsibilities listed</li>
                   {% endfor %}
                 </ul>
               </div>
@@ -195,27 +207,42 @@
                 <div class="timeline-header">
                   <span class="timeline-title">{{ edu.degree }} — {{ edu.institution }}</span>
                   <span class="timeline-period">
-                    {{ edu.start_date|date:"Y" }} — {{ edu.end_date|date:"Y" }}
+                    {{ edu.start_date|date:"Y" }} — {% if edu.end_date %}{{ edu.end_date|date:"Y" }}{% else %}Present{% endif %}
                   </span>
                 </div>
+                {% if edu.description %}
                 <div class="timeline-subtitle">Details</div>
                 <p style="font-size:0.88rem;color:var(--text-muted);">{{ edu.description }}</p>
+                {% endif %}
               </div>
               {% endfor %}
             </div>
           </section>
 
           <!-- Featured Projects -->
+          {% if projects %}
           <section class="content-section fade-in">
             <h2 class="section-title">Featured Projects</h2>
             <div class="project-grid">
               {% for project in projects %}
-              <div class="project-card">
+              <div class="project-card" {% if project.url %}onclick="window.open('{{ project.url }}','_blank')" style="cursor:pointer;"{% endif %}>
+
+                <!-- ✅ صورة حقيقية أو أيقونة -->
                 <div class="project-img">
-                  <i class="fas fa-laptop-code"></i>
+                  {% if project.image %}
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}" style="width:100%;height:100%;object-fit:cover;" />
+                  {% else %}
+                    <i class="{{ project.icon_class }}"></i>
+                  {% endif %}
                 </div>
+
                 <div class="project-info">
-                  <h3 class="project-title">{{ project.title }}</h3>
+                  <h3 class="project-title">
+                    {{ project.title }}
+                    {% if project.url %}
+                      <i class="fas fa-external-link-alt" style="font-size:0.7rem;margin-left:6px;color:var(--gold-muted);"></i>
+                    {% endif %}
+                  </h3>
                   <p>{{ project.description }}</p>
                   <div class="project-tags">
                     {% for tech in project.technologies.all %}
@@ -223,12 +250,15 @@
                     {% endfor %}
                   </div>
                 </div>
+
               </div>
               {% endfor %}
             </div>
           </section>
+          {% endif %}
 
           <!-- Interests -->
+          {% if interests %}
           <section class="content-section fade-in">
             <h2 class="section-title">Interests</h2>
             <div class="interest-grid">
@@ -240,6 +270,7 @@
               {% endfor %}
             </div>
           </section>
+          {% endif %}
 
         </div><!-- /.content -->
       </div><!-- /.main-content -->
@@ -248,10 +279,21 @@
     <!-- ====== FOOTER ====== -->
     <footer>
       <div class="footer-content">
-        <p class="footer-quote">"Your motivational quote goes here"</p>
+
+        <!-- ✅ Quote من الـ database -->
+        {% if quote %}
+        <p class="footer-quote">
+          "{{ quote.text }}"
+          {% if quote.author %}
+            <span class="quote-author">— {{ quote.author }}</span>
+          {% endif %}
+        </p>
+        {% endif %}
+
         <a href="mailto:{{ personal_info.email }}" class="contact-btn">
           <i class="fas fa-envelope" style="margin-right:8px;"></i>Contact Me
         </a>
+
       </div>
     </footer>
 
@@ -271,7 +313,7 @@
           }, 100);
         });
 
-        document.querySelectorAll("a, .skill-item, .project-card, .interest-item, .theme-toggle")
+        document.querySelectorAll("a, .skill-item, .project-card, .interest-item, .cert-item")
           .forEach((el) => {
             el.addEventListener("mouseenter", () => {
               cursor.style.transform   = "translate(-50%,-50%) scale(2.5)";
@@ -287,8 +329,7 @@
       // ── Particles ─────────────────────────────────────
       function createParticles() {
         const container = document.getElementById("particles");
-        // عدد أقل على الموبايل
-        const count = window.innerWidth < 640 ? 25 : 50;
+        const count = window.innerWidth < 640 ? 20 : 45;
         for (let i = 0; i < count; i++) {
           const p = document.createElement("div");
           p.classList.add("particle");
@@ -315,7 +356,7 @@
       }
 
       // ── Profile hover effect ───────────────────────────
-      const profileEl = document.getElementById("profile");
+      const profileEl  = document.getElementById("profile");
       const profileTpl = document.getElementById("profile-template").innerHTML;
       if (profileEl) {
         profileEl.addEventListener("mouseenter", function () {
@@ -326,23 +367,20 @@
         });
       }
 
-      // ── Scroll fade-in ────────────────────────────────
+      // ── Scroll fade-in (إصلاح تعارض CSS/JS) ──────────
       const fadeEls = document.querySelectorAll(".fade-in");
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.style.opacity   = "1";
-            entry.target.style.transform = "translateY(0)";
+            entry.target.classList.add("visible");
             observer.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.12 });
+      }, { threshold: 0.08 });
       fadeEls.forEach((el) => observer.observe(el));
 
       // ── Init ──────────────────────────────────────────
-      document.addEventListener("DOMContentLoaded", () => {
-        createParticles();
-      });
+      document.addEventListener("DOMContentLoaded", createParticles);
     </script>
   </body>
 </html>
