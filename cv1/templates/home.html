@@ -54,6 +54,10 @@
         <h1>{{ personal_info.user.get_full_name }}</h1>
         <div class="job-title">{{ personal_info.job_title }}</div>
         <div class="social-icons">
+
+    {% if personal_info.instagram_url %}
+        <a href="{{ personal_info.instagram_url }}" target="_blank"><i class="fab fa-instagram"></i></a>
+    {% endif %}
     {% if personal_info.twitter_url %}
         <a href="{{ personal_info.twitter_url }}" target="_blank"><i class="fab fa-twitter"></i></a>
     {% endif %}
@@ -66,9 +70,7 @@
         <a href="{{ personal_info.github_url }}" target="_blank"><i class="fab fa-github"></i></a>
     {% endif %}
 
-    {% if personal_info.website_url %}
-        <a href="{{ personal_info.website_url }}" target="_blank"><i class="fas fa-globe"></i></a>
-    {% endif %}
+
 </div>
 
 
